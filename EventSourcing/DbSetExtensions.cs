@@ -1,44 +1,26 @@
-using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
-namespace Project;
+namespace Project.EventSourcing;
 
-public sealed class EventStorage
+public static class DbSetExtensions
 {
-    private int _idCounter = 0;
-    private readonly List<EventStorageModel> _events = new();
-
-    public IEnumerable<EventStorageModel> Events => _events.AsEnumerable();
-
-    public void AddEvent(EventBase e, Guid streamId)
+    public static void AppendEvent(this DbSet<EventEntity> dbSet, EventBase e, Guid streamId)
     {
-        _events.Add(new EventStorageModel()
+        dbSet.Add(new EventEntity()
         {
-            Id = _idCounter++,
             TimeStamp = DateTime.UtcNow,
             StreamId = streamId,
             Data = e.Serialize(),
             DataType = e.GetRuntimeType()
         });
     }
-
-    public string GetDebugView()
-    {
-        var sb = new StringBuilder();
-
-        foreach (var e in _events)
-        {
-            sb.AppendLine(e.ToString());
-        }
-
-        return sb.ToString();
-    }
-
-    public TAggregate Aggregate<TAggregate>(Guid streamId) where TAggregate : AggregateBase, new()
+    
+    public static TAggregate AggregateEvents<TAggregate>(this DbSet<EventEntity> dbSet, Guid streamId) where TAggregate : AggregateBase, new()
     {
         var agg = new TAggregate();
 
-        foreach (var e in _events)
+        foreach (var e in dbSet)
         {
             var eventDataType = Type.GetType(e.DataType);
             if (eventDataType is null)

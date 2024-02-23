@@ -1,8 +1,8 @@
-namespace Project;
+namespace Project.EventSourcing;
 
-public sealed record EventStorageModel
+public class EventEntity
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
     public required Guid StreamId { get; init; }
     public required DateTime TimeStamp { get; init; }
     public required string DataType { get; init; }

@@ -1,4 +1,5 @@
 using Project.Events;
+using Project.EventSourcing;
 
 namespace Project;
 
@@ -6,6 +7,7 @@ public sealed class GameAggregate : AggregateBase
 {
     public DateTime? DateTimeStart { get; private set; }
     public DateTime? DateTimeEnd { get; private set; }
+    public int Points { get; private set; }
 
     public bool IsTerminated => DateTimeEnd is null;
 
@@ -34,24 +36,20 @@ public sealed class GameAggregate : AggregateBase
     private void OnEvent(GameStartedEvent e, EventMetadata meta)
     {
         DateTimeStart = meta.TimeStamp;
-
-        Console.WriteLine(e);
     }
 
     private void OnEvent(GameSavedEvent e, EventMetadata meta)
     {
-        Console.WriteLine(e);
+        Points += e.Points;
     }
 
     private void OnEvent(GameTerminatedEvent e, EventMetadata meta)
     {
         DateTimeEnd = meta.TimeStamp;
-
-        Console.WriteLine(e);
     }
 
     public override string ToString()
     {
-        return $"DateTimeStart: {DateTimeStart}, DateTimeEnd: {DateTimeEnd}";
+        return $"DateTimeStart: {DateTimeStart}, DateTimeEnd: {DateTimeEnd}, Points: {Points}";
     }
 }

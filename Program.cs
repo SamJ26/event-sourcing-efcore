@@ -1,4 +1,6 @@
 ﻿using Project.Events;
+using Project.Persistence;
+using Project.EventSourcing;
 
 namespace Project;
 
@@ -6,18 +8,21 @@ class Program
 {
     static void Main(string[] args)
     {
-        var eventStorage = new EventStorage();
+        using (var dbContext = new AppDbContext())
+        {
+            Guid streamId = Guid.NewGuid();
+            
+            dbContext.GameEvents.AppendEvent(new GameStartedEvent(), streamId);
+            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.GameEvents.AppendEvent(new GameTerminatedEvent(), streamId);
 
-        Guid streamId = Guid.NewGuid();
-
-        eventStorage.AddEvent(new GameStartedEvent(), streamId);
-        eventStorage.AddEvent(new GameSavedEvent(), streamId);
-        eventStorage.AddEvent(new GameSavedEvent(), streamId);
-        eventStorage.AddEvent(new GameSavedEvent(), streamId);
-        eventStorage.AddEvent(new GameTerminatedEvent(), streamId);
-
-        var aggregate = eventStorage.Aggregate<GameAggregate>(streamId);
-
-        Console.WriteLine(aggregate);
+            dbContext.SaveChanges();
+            
+            var aggregate = dbContext.GameEvents.AggregateEvents<GameAggregate>(streamId);
+            
+            Console.WriteLine(aggregate);
+        }
     }
 }
