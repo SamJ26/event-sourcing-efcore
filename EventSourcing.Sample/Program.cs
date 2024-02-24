@@ -12,15 +12,15 @@ class Program
         {
             Guid streamId = Guid.NewGuid();
 
-            dbContext.GameEvents.AppendEvent(new GameStartedEvent(), streamId);
-            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
-            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
-            dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
-            dbContext.GameEvents.AppendEvent(new GameTerminatedEvent(), streamId);
+            dbContext.Events.AppendEvent(new GameStartedEvent(), streamId);
+            dbContext.Events.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.Events.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.Events.AppendEvent(new GameSavedEvent(), streamId);
+            dbContext.Events.AppendEvent(new GameTerminatedEvent(), streamId);
 
             dbContext.SaveChanges();
 
-            var aggregate = dbContext.GameEvents.AggregateEvents<GameAggregate>(streamId);
+            var aggregate = dbContext.Events.AggregateEvents<GameAggregate>(streamId);
 
             Console.WriteLine(aggregate);
         }

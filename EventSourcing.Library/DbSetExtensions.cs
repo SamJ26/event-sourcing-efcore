@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +21,10 @@ public static class DbSetExtensions
     public static TAggregate AggregateEvents<TAggregate>(this DbSet<Event> dbSet, Guid streamId) where TAggregate : AggregateBase, new()
     {
         var agg = new TAggregate();
-
         var assembly = typeof(TAggregate).Assembly;
+        var events = dbSet.Where(x => x.StreamId == streamId);
 
-        foreach (var e in dbSet)
+        foreach (var e in events)
         {
             var eventDataType = assembly.GetType(e.DataType);
             if (eventDataType is null)

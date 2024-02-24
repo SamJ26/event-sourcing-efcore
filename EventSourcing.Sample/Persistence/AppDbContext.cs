@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventSourcing.Sample.Persistence;
 
-public sealed class AppDbContext : DbContext
+public sealed class AppDbContext : EventSourcingDbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseInMemoryDatabase("in_memory");
+        optionsBuilder.UseNpgsql("");
     }
-
-    public DbSet<Event> GameEvents { get; init; } = null!;
 }
