@@ -1,7 +1,7 @@
+using EventSourcing.Library;
 using Microsoft.EntityFrameworkCore;
-using Project.EventSourcing;
 
-namespace Project.Persistence;
+namespace EventSourcing.Sample.Persistence;
 
 public sealed class AppDbContext : DbContext
 {

@@ -1,8 +1,8 @@
-﻿using Project.Events;
-using Project.Persistence;
-using Project.EventSourcing;
+﻿using EventSourcing.Library;
+using EventSourcing.Sample.Events;
+using EventSourcing.Sample.Persistence;
 
-namespace Project;
+namespace EventSourcing.Sample;
 
 class Program
 {

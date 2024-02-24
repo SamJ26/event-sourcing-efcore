@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Project.EventSourcing;
+namespace EventSourcing.Library;
 
 public abstract class EventBase
 {

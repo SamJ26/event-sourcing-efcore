@@ -1,4 +1,6 @@
-namespace Project.EventSourcing;
+using System;
+
+namespace EventSourcing.Library;
 
 public abstract class AggregateBase
 {

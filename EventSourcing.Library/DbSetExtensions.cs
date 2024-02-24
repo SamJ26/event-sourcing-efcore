@@ -1,7 +1,8 @@
+using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace Project.EventSourcing;
+namespace EventSourcing.Library;
 
 public static class DbSetExtensions
 {
@@ -15,14 +16,16 @@ public static class DbSetExtensions
             DataType = e.GetRuntimeType()
         });
     }
-    
+
     public static TAggregate AggregateEvents<TAggregate>(this DbSet<Event> dbSet, Guid streamId) where TAggregate : AggregateBase, new()
     {
         var agg = new TAggregate();
 
+        var assembly = typeof(TAggregate).Assembly;
+
         foreach (var e in dbSet)
         {
-            var eventDataType = Type.GetType(e.DataType);
+            var eventDataType = assembly.GetType(e.DataType);
             if (eventDataType is null)
             {
                 throw new Exception($"Event type with name '{e.DataType}' does not exists.");

@@ -1,6 +1,6 @@
-using Project.EventSourcing;
+using EventSourcing.Library;
 
-namespace Project.Events;
+namespace EventSourcing.Sample.Events;
 
 public sealed class GameSavedEvent : EventBase
 {

@@ -1,9 +1,9 @@
-using Project.Events;
-using Project.EventSourcing;
+using EventSourcing.Library;
+using EventSourcing.Sample.Events;
 
-namespace Project;
+namespace EventSourcing.Sample;
 
-public sealed class GameAggregate : AggregateBase
+public class GameAggregate : AggregateBase
 {
     public DateTime? DateTimeStart { get; private set; }
     public DateTime? DateTimeEnd { get; private set; }
