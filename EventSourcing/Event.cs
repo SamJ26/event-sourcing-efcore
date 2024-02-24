@@ -1,6 +1,6 @@
 namespace Project.EventSourcing;
 
-public class EventEntity
+public class Event
 {
     public int Id { get; init; }
     public required Guid StreamId { get; init; }

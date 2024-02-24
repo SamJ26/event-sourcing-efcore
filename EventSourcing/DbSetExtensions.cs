@@ -5,9 +5,9 @@ namespace Project.EventSourcing;
 
 public static class DbSetExtensions
 {
-    public static void AppendEvent(this DbSet<EventEntity> dbSet, EventBase e, Guid streamId)
+    public static void AppendEvent(this DbSet<Event> dbSet, EventBase e, Guid streamId)
     {
-        dbSet.Add(new EventEntity()
+        dbSet.Add(new Event()
         {
             TimeStamp = DateTime.UtcNow,
             StreamId = streamId,
@@ -16,7 +16,7 @@ public static class DbSetExtensions
         });
     }
     
-    public static TAggregate AggregateEvents<TAggregate>(this DbSet<EventEntity> dbSet, Guid streamId) where TAggregate : AggregateBase, new()
+    public static TAggregate AggregateEvents<TAggregate>(this DbSet<Event> dbSet, Guid streamId) where TAggregate : AggregateBase, new()
     {
         var agg = new TAggregate();
 

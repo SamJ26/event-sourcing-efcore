@@ -10,5 +10,5 @@ public sealed class AppDbContext : DbContext
         optionsBuilder.UseInMemoryDatabase("in_memory");
     }
 
-    public DbSet<EventEntity> GameEvents { get; init; } = null!;
+    public DbSet<Event> GameEvents { get; init; } = null!;
 }

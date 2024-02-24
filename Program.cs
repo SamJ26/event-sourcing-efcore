@@ -11,7 +11,7 @@ class Program
         using (var dbContext = new AppDbContext())
         {
             Guid streamId = Guid.NewGuid();
-            
+
             dbContext.GameEvents.AppendEvent(new GameStartedEvent(), streamId);
             dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
             dbContext.GameEvents.AppendEvent(new GameSavedEvent(), streamId);
@@ -19,9 +19,9 @@ class Program
             dbContext.GameEvents.AppendEvent(new GameTerminatedEvent(), streamId);
 
             dbContext.SaveChanges();
-            
+
             var aggregate = dbContext.GameEvents.AggregateEvents<GameAggregate>(streamId);
-            
+
             Console.WriteLine(aggregate);
         }
     }
